@@ -11,16 +11,13 @@
     <div class="max-w-[90%] w-full grid grid-cols-1 md:grid-cols-2 gap-24 lg:gap-40 items-center mx-auto">
         
         <div class="text-left">
-            <p class="text-lg font-medium opacity-90 mb-2 uppercase tracking-widest text-white">
-                Projek Akhir SIJA
-            </p>
             <h1 class="text-6xl md:text-8xl font-bold mb-4 leading-tight text-white">
                 Selamat Datang
             </h1>
             <p class="text-2xl md:text-3xl font-light mb-10 text-white opacity-90">
-                Kelola Kas Kelas Digital dengan Mudah.
+                Kas digital membantu Anda mengelola keuangan kelas secara profesional, aman, mudah,
+                efisien, dan mudah diakses kapan saja.
             </p>
-            
             <div class="flex flex-wrap gap-6">
                 @if (Route::has('login'))
                     @auth

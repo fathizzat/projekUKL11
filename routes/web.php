@@ -28,4 +28,7 @@ Route::middleware(['auth','role:user'])->group(function () {
 
 Route::resource('transaksi', TransaksiController::class)->middleware('auth');
 
+Route::get('/transaksi', function () {
+    return view('transaksi.index');
+})->middleware(['auth'])->name('transaksi.index');
 require __DIR__.'/auth.php';
