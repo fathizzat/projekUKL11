@@ -18,22 +18,25 @@
                 Kas digital membantu Anda mengelola keuangan kelas secara profesional, aman, mudah,
                 efisien, dan mudah diakses kapan saja.
             </p>
-            <div class="flex flex-wrap gap-6">
-                @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="bg-[#22C55E] hover:bg-green-600 text-white px-10 py-4 rounded-xl text-xl font-bold transition transform hover:scale-105 shadow-xl">
-                            Ke Dashboard
-                        </a>
-                    @else
-                        <a href="{{ route('register') }}" class="bg-[#22C55E] hover:bg-green-600 text-white px-12 py-4 rounded-xl text-xl font-bold transition transform hover:scale-105 shadow-xl">
-                            Register
-                        </a>
-                        <a href="{{ route('login') }}" class="border-2 border-white text-white px-12 py-4 rounded-xl text-xl font-bold hover:bg-white hover:text-[#D65A5A] transition shadow-lg">
-                            Login
-                        </a>
-                    @endauth
-                @endif
-            </div>
+            <div class="flex gap-4">
+    @if (Route::has('login'))
+        @auth
+            <a href="{{ url('/dashboard') }}" class="bg-[#a03e40] text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-red-900/20 hover:scale-105 transition-all">
+                Buka Dashboard
+            </a>
+        @else
+            <a href="{{ route('login') }}" class="bg-[#a03e40] text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-red-900/20 hover:scale-105 transition-all">
+                Masuk
+            </a>
+
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}" class="bg-white text-[#a03e40] border-2 border-[#a03e40] px-8 py-3 rounded-xl font-bold hover:bg-red-50 transition-all">
+                    Daftar Akun
+                </a>
+            @endif
+        @endauth
+    @endif
+</div>
         </div>
 
         <div class="hidden md:flex justify-end">

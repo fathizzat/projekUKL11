@@ -32,3 +32,7 @@ Route::get('/transaksi', function () {
     return view('transaksi.index');
 })->middleware(['auth'])->name('transaksi.index');
 require __DIR__.'/auth.php';
+
+Route::get('/transaksi/tambah', function () {
+    return view('transaksi.create');
+})->middleware(['auth'])->name('transaksi.create');

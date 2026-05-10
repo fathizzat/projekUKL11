@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
-===========================================================
-1. CSS KHUSUS AUTH (LOGIN & REGISTER) 
-===========================================================
-
-
 /* Container Utama */
 .auth-google-layout.bg-auth-gradient {
     /* Menggunakan warna merah yang sama dengan overlay agar menyatu */
@@ -16,7 +10,7 @@
     height: 100vh;
 }
 
-/* Pastikan body tidak memiliki margin agar gradient penuh */
+
 body {
     margin: 0;
     padding: 0;
@@ -128,14 +122,12 @@ body {
 }
 
 
-/* resources/css/app.css */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 .font-jakarta {
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Custom scrollbar untuk tabel biar cantik */
 .overflow-x-auto::-webkit-scrollbar {
     height: 6px;
 }
