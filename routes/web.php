@@ -36,3 +36,8 @@ require __DIR__.'/auth.php';
 Route::get('/transaksi/tambah', function () {
     return view('transaksi.create');
 })->middleware(['auth'])->name('transaksi.create');
+
+// Rute CRUD User / Daftar Siswa
+Route::get('/users', function () {
+    return view('user.index');
+})->middleware(['auth'])->name('user.index');

@@ -5,7 +5,7 @@
         </div>
         <div>
             <h1 class="text-lg font-black text-slate-800 leading-none uppercase tracking-tighter">Kas Digital</h1>
-            <p class="text-[10px] text-slate-400 font-bold tracking-[0.2em] mt-1">XI SIJA 1</p>
+            <p class="text-[10px] text-slate-400 font-bold tracking-[0.2em] mt-1"></p>
         </div>
     </div>
 
@@ -17,10 +17,10 @@
             <span class="font-bold text-sm tracking-tight">Manajemen Kas</span>
         </a>
 
-        <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all">
-            <span class="material-symbols-outlined text-2xl">group</span>
-            <span class="font-bold text-sm tracking-tight">Daftar Siswa</span>
-        </a>
+        <a href="{{ route('user.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all {{ request()->routeIs('user.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+    <span class="material-symbols-outlined text-2xl">group</span>
+    <span class="font-bold text-sm tracking-tight">Daftar Siswa</span>
+</a>
 
         <div class="pt-8 px-4">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Account</p>

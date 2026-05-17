@@ -18,19 +18,20 @@
                 Kas digital membantu Anda mengelola keuangan kelas secara profesional, aman, mudah,
                 efisien, dan mudah diakses kapan saja.
             </p>
-            <div class="flex gap-4">
+            <div class="flex items-center gap-6 mt-10">
     @if (Route::has('login'))
         @auth
-            <a href="{{ url('/dashboard') }}" class="bg-[#a03e40] text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-red-900/20 hover:scale-105 transition-all">
-                Buka Dashboard
+            <a href="{{ url('/dashboard') }}" class="inline-flex items-center justify-center bg-white text-[#a03e40] px-10 py-4 rounded-2xl font-extrabold shadow-xl shadow-black/10 hover:scale-105 hover:bg-slate-50 transition-all duration-300 tracking-tight">
+                Ke Dashboard
+                <span class="material-symbols-outlined ml-2 text-xl font-bold">arrow_forward</span>
             </a>
         @else
-            <a href="{{ route('login') }}" class="bg-[#a03e40] text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-red-900/20 hover:scale-105 transition-all">
+            <a href="{{ route('login') }}" class="inline-flex items-center justify-center bg-white text-[#a03e40] px-10 py-4 rounded-2xl font-extrabold shadow-xl shadow-black/10 hover:scale-105 hover:bg-slate-50 transition-all duration-300 tracking-tight">
                 Masuk
             </a>
 
             @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="bg-white text-[#a03e40] border-2 border-[#a03e40] px-8 py-3 rounded-xl font-bold hover:bg-red-50 transition-all">
+                <a href="{{ route('register') }}" class="inline-flex items-center justify-center border-2 border-white/40 text-white px-10 py-4 rounded-2xl font-extrabold hover:bg-white hover:text-[#a03e40] hover:border-white hover:scale-105 transition-all duration-300 tracking-tight">
                     Daftar Akun
                 </a>
             @endif
