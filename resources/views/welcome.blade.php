@@ -1,51 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kas Digital - Selamat Datang</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="antialiased font-sans bg-[#D65A5A] min-h-screen flex items-center justify-start p-10 md:p-20">
-
-    <div class="max-w-[90%] w-full grid grid-cols-1 md:grid-cols-2 gap-24 lg:gap-40 items-center mx-auto">
+    <title>Kas Digital - Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus_Jakarta_Sans', 'Plus Jakarta Sans', sans-serif;
+        }
         
-        <div class="text-left">
-            <h1 class="text-6xl md:text-8xl font-bold mb-4 leading-tight text-white">
-                Selamat Datang
-            </h1>
-            <p class="text-2xl md:text-3xl font-light mb-10 text-white opacity-90">
-                Kas digital membantu Anda mengelola keuangan kelas secara profesional, aman, mudah,
-                efisien, dan mudah diakses kapan saja.
-            </p>
-            <div class="flex items-center gap-6 mt-10">
-    @if (Route::has('login'))
-        @auth
-            <a href="{{ url('/dashboard') }}" class="inline-flex items-center justify-center bg-white text-[#a03e40] px-10 py-4 rounded-2xl font-extrabold shadow-xl shadow-black/10 hover:scale-105 hover:bg-slate-50 transition-all duration-300 tracking-tight">
-                Ke Dashboard
-                <span class="material-symbols-outlined ml-2 text-xl font-bold">arrow_forward</span>
-            </a>
-        @else
-            <a href="{{ route('login') }}" class="inline-flex items-center justify-center bg-white text-[#a03e40] px-10 py-4 rounded-2xl font-extrabold shadow-xl shadow-black/10 hover:scale-105 hover:bg-slate-50 transition-all duration-300 tracking-tight">
-                Masuk
-            </a>
+        .grid-mask {
+            mask-image: radial-gradient(circle at center, white 10%, transparent 75%);
+            -webkit-mask-image: radial-gradient(circle at center, white 10%, transparent 75%);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between relative overflow-hidden">
 
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="inline-flex items-center justify-center border-2 border-white/40 text-white px-10 py-4 rounded-2xl font-extrabold hover:bg-white hover:text-[#a03e40] hover:border-white hover:scale-105 transition-all duration-300 tracking-tight">
-                    Daftar Akun
-                </a>
-            @endif
-        @endauth
-    @endif
-</div>
-        </div>
+    <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <svg class="absolute inset-x-0 inset-y-[-10%] h-[120%] w-full fill-slate-300/30 stroke-slate-300/50 skew-y-3 grid-mask" aria-hidden="true">
+            <defs>
+                <pattern id="grid-pattern-ukl" width="35" height="35" patternUnits="userSpaceOnUse" x="-1" y="-1">
+                    <path d="M.5 35V.5H35" fill="none" stroke-dasharray="0" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" stroke-width="0" fill="url(#grid-pattern-ukl)" />
+            
+            <svg x="-1" y="-1" class="overflow-visible fill-slate-200/60 dark:fill-slate-700/10">
+                <rect stroke-width="0" width="34" height="34" x="141" y="141" />
+                <rect stroke-width="0" width="34" height="34" x="246" y="71" />
+                <rect stroke-width="0" width="34" height="34" x="421" y="211" />
+                <rect stroke-width="0" width="34" height="34" x="596" y="106" />
+                <rect stroke-width="0" width="34" height="34" x="771" y="281" />
+                <rect stroke-width="0" width="34" height="34" x="946" y="141" />
+            </svg>
+        </svg>
 
-        <div class="hidden md:flex justify-end">
-            <img src="https://cdni.iconscout.com/illustration/premium/thumb/online-payment-4268311-3551717.png" 
-                alt="Fintech Illustration" 
-                class="w-full max-w-xl drop-shadow-2xl transition duration-500 hover:scale-110">
-        </div>
+        <div class="absolute top-1/4 left-1/2 -z-10 h-80 w-80 -translate-x-1/2 rounded-full bg-red-200/20 blur-[130px]"></div>
     </div>
+
+    <header class="w-full px-8 md:px-16 py-6 flex justify-between items-center z-10 bg-white/60 backdrop-blur-md border-b border-slate-200/50">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#a03e40] font-bold text-2xl">account_balance_wallet</span>
+            <span class="text-lg font-extrabold tracking-tight text-slate-900">Kas<span class="text-[#a03e40]">Digital.</span></span>
+        </div>
+        <div>
+            @if (Route::has('login'))
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="px-5 py-2.5 rounded-xl text-sm font-bold bg-[#a03e40] text-white hover:bg-[#893537] shadow-lg shadow-red-900/10 transition-all">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="text-sm font-bold text-slate-600 hover:text-[#a03e40] mr-6 transition-colors">Masuk</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="px-5 py-2.5 rounded-xl text-sm font-bold bg-[#a03e40] text-white hover:bg-[#893537] shadow-lg shadow-red-900/10 transition-all">Registrasi</a>
+                    @endif
+                @endauth
+            @endif
+        </div>
+    </header>
+
+    <main class="w-full flex-1 flex flex-col items-center justify-center text-center px-6 z-10 max-w-4xl mx-auto py-12">
+        
+
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-950 leading-tight">
+            Kelola Keuangan Kelas <br>
+            <span class="bg-gradient-to-r from-[#a03e40] to-red-500 bg-clip-text text-transparent">
+                Lebih Praktis & Transparan
+            </span>
+        </h1>
+
+        <p class="max-w-2xl mx-auto text-base md:text-lg text-slate-600 font-medium mt-6 leading-relaxed">
+            Pantau iuran mingguan, cek rekapitulasi pengeluaran, dan simpan riwayat transaksi kelas secara realtime dan aman.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8 w-full sm:w-auto">
+            <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-3.5 bg-[#a03e40] hover:bg-[#893537] text-white font-bold rounded-xl shadow-xl shadow-red-900/10 hover:shadow-red-900/20 transition-all text-sm flex items-center justify-center gap-2">
+                Mulai Sekarang
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+    
+        </div>
+    </main>
+
+    <footer class="w-full py-6 text-center text-xs text-slate-400 border-t border-slate-200/50 bg-white/40 backdrop-blur-sm z-10">
+        <p>© 2026 Kas Digital Management • SMK Telkom Sidoarjo. Built for transparency.</p>
+    </footer>
 
 </body>
 </html>

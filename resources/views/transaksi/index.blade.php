@@ -135,7 +135,7 @@
             <form action="#" method="POST" class="p-6 space-y-4">
                 @csrf
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Keterangan Transaksi</label>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tambah Kas Baru</label>
                     <input type="text" name="keterangan" placeholder="Contoh: Iuran Minggu ke-1" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-red-100 focus:border-[#a03e40] outline-none transition-all">
                 </div>
                 <div>
@@ -143,11 +143,11 @@
                     <div class="grid grid-cols-2 gap-3">
                         <label class="border border-slate-200 p-3 rounded-xl flex items-center gap-2 cursor-pointer hover:bg-slate-50">
                             <input type="radio" name="tipe" value="masuk" checked class="text-[#a03e40] focus:ring-[#a03e40]">
-                            <span class="text-sm font-bold text-slate-700">Pemasukan</span>
+                            <span class="text-sm font-bold text-slate-700">Organisasi</span>
                         </label>
                         <label class="border border-slate-200 p-3 rounded-xl flex items-center gap-2 cursor-pointer hover:bg-slate-50">
                             <input type="radio" name="tipe" value="keluar" class="text-[#a03e40] focus:ring-[#a03e40]">
-                            <span class="text-sm font-bold text-slate-700">Pengeluaran</span>
+                            <span class="text-sm font-bold text-slate-700">Kelas</span>
                         </label>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
                 </div>
                 <div class="pt-4 flex gap-3">
                     <button type="button" onclick="toggleKasModal(false)" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold transition-all text-sm">Batal</button>
-                    <button type="submit" class="flex-1 py-3 bg-[#a03e40] hover:bg-[#893537] text-white rounded-xl font-bold transition-all text-sm shadow-md">Catat Transaksi</button>
+                    <button type="submit" class="flex-1 py-3 bg-[#a03e40] hover:bg-[#893537] text-white rounded-xl font-bold transition-all text-sm shadow-md">Tambah Kas</button>
                 </div>
             </form>
         </div>

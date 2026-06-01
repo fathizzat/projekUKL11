@@ -10,35 +10,128 @@
     </div>
 
     <nav class="px-4 space-y-2">
-        <p class="px-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Main Menu</p>
 
-        <a href="{{ route('transaksi.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all {{ request()->routeIs('transaksi.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
-            <span class="material-symbols-outlined text-2xl">receipt_long</span>
-            <span class="font-bold text-sm tracking-tight">Manajemen Kas</span>
+    <p class="px-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">
+        Main Menu
+    </p>
+
+    <!-- DASHBOARD -->
+    <a href="{{ route('dashboard') }}"
+       class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
+       {{ request()->routeIs('dashboard') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+
+        <span class="material-symbols-outlined text-2xl">
+            dashboard
+        </span>
+
+        <span class="font-bold text-sm tracking-tight">
+            Dashboard
+        </span>
+
+    </a>
+
+    {{-- KHUSUS SUPER ADMIN & BENDAHARA --}}
+    @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
+
+        <a href="{{ route('transaksi.index') }}"
+           class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
+           {{ request()->routeIs('transaksi.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+
+            <span class="material-symbols-outlined text-2xl">
+                receipt_long
+            </span>
+
+            <span class="font-bold text-sm tracking-tight">
+                Manajemen Kas
+            </span>
+
         </a>
 
-        <a href="{{ route('user.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all {{ request()->routeIs('user.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
-    <span class="material-symbols-outlined text-2xl">group</span>
-    <span class="font-bold text-sm tracking-tight">Daftar Siswa</span>
-</a>
+        <a href="{{ route('user.index') }}"
+           class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
+           {{ request()->routeIs('user.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
 
-        <div class="pt-8 px-4">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Account</p>
-        </div>
+            <span class="material-symbols-outlined text-2xl">
+                group
+            </span>
 
-        <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all">
-            <span class="material-symbols-outlined text-2xl">settings</span>
-            <span class="font-bold text-sm tracking-tight">Pengaturan</span>
+            <span class="font-bold text-sm tracking-tight">
+                Daftar Siswa
+            </span>
+
         </a>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-rose-400 hover:bg-rose-50 hover:text-rose-600 transition-all mt-4">
-                <span class="material-symbols-outlined text-2xl">logout</span>
-                <span class="font-bold text-sm tracking-tight">Keluar Sistem</span>
-            </button>
-        </form>
-    </nav>
+    @endif
+
+    {{-- KHUSUS ANGGOTA --}}
+    @if(Auth::user()->role == 'anggota')
+
+        <a href="#"
+           class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all">
+
+            <span class="material-symbols-outlined text-2xl">
+                payments
+            </span>
+
+            <span class="font-bold text-sm tracking-tight">
+                Pembayaran Saya
+            </span>
+
+        </a>
+
+        <a href="#"
+           class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all">
+
+            <span class="material-symbols-outlined text-2xl">
+                upload_file
+            </span>
+
+            <span class="font-bold text-sm tracking-tight">
+                Upload Bukti
+            </span>
+
+        </a>
+
+    @endif
+
+    <div class="pt-8 px-4">
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">
+            Account
+        </p>
+    </div>
+
+    <a href="#"
+       class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all">
+
+        <span class="material-symbols-outlined text-2xl">
+            settings
+        </span>
+
+        <span class="font-bold text-sm tracking-tight">
+            Pengaturan
+        </span>
+
+    </a>
+
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+
+        <button type="submit"
+            class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-rose-400 hover:bg-rose-50 hover:text-rose-600 transition-all mt-4">
+
+            <span class="material-symbols-outlined text-2xl">
+                logout
+            </span>
+
+            <span class="font-bold text-sm tracking-tight">
+                Keluar Sistem
+            </span>
+
+        </button>
+
+    </form>
+
+</nav>
 
     <div class="absolute bottom-0 left-0 w-full p-6">
         <div class="bg-slate-50 p-4 rounded-2xl flex items-center gap-3 border border-slate-100">
