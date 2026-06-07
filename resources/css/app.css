@@ -55,7 +55,7 @@ body {
 
 .auth-google-layout #container.active .overlay-container { transform: translateX(-100%); }
 
-/* Bagian Merah */
+
 .auth-google-layout .overlay {
     background: linear-gradient(to right, #D65A5A, #fb7185);
     color: #FFFFFF;
