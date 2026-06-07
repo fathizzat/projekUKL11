@@ -107,7 +107,7 @@
                                         Rp
                                     </span>
 
-                                    <h1 class="text-5xl font-black text-slate-900 leading-none">
+                                    <h1 class="text-4xl font-black text-slate-900 leading-none">
                                         1.000.000
                                     </h1>
 
