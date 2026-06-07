@@ -6,19 +6,21 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class rolemiddleware
+class RoleMiddleware
 {
     /**
      * Handle an incoming request.
      *
+     * Supports multiple roles: role:super_admin,bendahara
+     *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next, $role)
-{
-    if (!auth()->check() || auth()->user()->role != $role) {
-        abort(403);
-    }
+    public function handle(Request $request, Closure $next, string ...$roles): Response
+    {
+        if (!auth()->check() || !in_array(auth()->user()->role, $roles)) {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        }
 
-    return $next($request);
-}
+        return $next($request);
+    }
 }

@@ -1,47 +1,35 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransaksiController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Dashboard — semua role bisa akses (auth required)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
+// Profile routes (Breeze default)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth','role:admin'])->group(function () {
+// User CRUD — super_admin only
+Route::middleware(['auth', 'role:super_admin'])->group(function () {
+    Route::resource('user', UserController::class);
+});
+
+// Transaksi CRUD — super_admin & bendahara
+Route::middleware(['auth', 'role:super_admin,bendahara'])->group(function () {
     Route::resource('transaksi', TransaksiController::class);
 });
 
-Route::middleware(['auth','role:user'])->group(function () {
-    Route::get('/transaksi', [TransaksiController::class, 'index']);
-});
-
-Route::resource('transaksi', TransaksiController::class)->middleware('auth');
-
-Route::get('/transaksi', function () {
-    return view('transaksi.index');
-})->middleware(['auth'])->name('transaksi.index');
 require __DIR__.'/auth.php';
-
-Route::get('/transaksi/tambah', function () {
-    return view('transaksi.create');
-})->middleware(['auth'])->name('transaksi.create');
-
-// Rute CRUD User / Daftar Siswa
-Route::get('/users', function () {
-    return view('user.index');
-})->middleware(['auth'])->name('user.index');

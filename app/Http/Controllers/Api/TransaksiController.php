@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\TransaksiResource;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -14,27 +16,27 @@ class TransaksiController extends Controller
     {
         $transaksis = Transaksi::with('user')
             ->orderBy('tanggal', 'desc')
-            ->orderBy('created_at', 'desc')
             ->get();
 
-        $totalPemasukan = Transaksi::where('jenis_transaksi', 'pemasukan')->sum('nominal');
-        $totalPengeluaran = Transaksi::where('jenis_transaksi', 'pengeluaran')->sum('nominal');
-        $totalSaldo = $totalPemasukan - $totalPengeluaran;
-
-        return view('transaksi.index', compact(
-            'transaksis',
-            'totalSaldo',
-            'totalPemasukan',
-            'totalPengeluaran'
-        ));
+        return response()->json([
+            'success' => true,
+            'message' => 'Data transaksi berhasil diambil.',
+            'data'    => TransaksiResource::collection($transaksis),
+        ]);
     }
 
     /**
-     * Show the form for creating a new transaksi.
+     * Display the specified transaksi.
      */
-    public function create()
+    public function show(Transaksi $transaksi)
     {
-        return view('transaksi.create');
+        $transaksi->load('user');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail transaksi berhasil diambil.',
+            'data'    => new TransaksiResource($transaksi),
+        ]);
     }
 
     /**
@@ -49,19 +51,16 @@ class TransaksiController extends Controller
             'tanggal'         => ['required', 'date'],
         ]);
 
-        $validated['user_id'] = auth()->id();
+        $validated['user_id'] = $request->user()->id;
 
-        Transaksi::create($validated);
+        $transaksi = Transaksi::create($validated);
+        $transaksi->load('user');
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan.');
-    }
-
-    /**
-     * Show the form for editing the specified transaksi.
-     */
-    public function edit(Transaksi $transaksi)
-    {
-        return view('transaksi.edit', compact('transaksi'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaksi berhasil ditambahkan.',
+            'data'    => new TransaksiResource($transaksi),
+        ], 201);
     }
 
     /**
@@ -77,8 +76,13 @@ class TransaksiController extends Controller
         ]);
 
         $transaksi->update($validated);
+        $transaksi->load('user');
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaksi berhasil diperbarui.',
+            'data'    => new TransaksiResource($transaksi),
+        ]);
     }
 
     /**
@@ -88,6 +92,9 @@ class TransaksiController extends Controller
     {
         $transaksi->delete();
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaksi berhasil dihapus.',
+        ]);
     }
 }

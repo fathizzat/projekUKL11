@@ -15,7 +15,7 @@
         Main Menu
     </p>
 
-    <!-- DASHBOARD -->
+    <!-- DASHBOARD — Semua role bisa akses -->
     <a href="{{ route('dashboard') }}"
        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
        {{ request()->routeIs('dashboard') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
@@ -30,7 +30,7 @@
 
     </a>
 
-    {{-- KHUSUS SUPER ADMIN & BENDAHARA --}}
+    {{-- TRANSAKSI — super_admin & bendahara --}}
     @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
 
         <a href="{{ route('transaksi.index') }}"
@@ -46,6 +46,11 @@
             </span>
 
         </a>
+
+    @endif
+
+    {{-- USER / DAFTAR SISWA — super_admin only --}}
+    @if(Auth::user()->role === 'super_admin')
 
         <a href="{{ route('user.index') }}"
            class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
@@ -63,45 +68,15 @@
 
     @endif
 
-    {{-- KHUSUS ANGGOTA --}}
-    @if(Auth::user()->role == 'anggota')
-
-        <a href="#"
-           class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all">
-
-            <span class="material-symbols-outlined text-2xl">
-                payments
-            </span>
-
-            <span class="font-bold text-sm tracking-tight">
-                Pembayaran Saya
-            </span>
-
-        </a>
-
-        <a href="#"
-           class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all">
-
-            <span class="material-symbols-outlined text-2xl">
-                upload_file
-            </span>
-
-            <span class="font-bold text-sm tracking-tight">
-                Upload Bukti
-            </span>
-
-        </a>
-
-    @endif
-
     <div class="pt-8 px-4">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">
             Account
         </p>
     </div>
 
-    <a href="#"
-       class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all">
+    <a href="{{ route('profile.edit') }}"
+       class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
+       {{ request()->routeIs('profile.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
 
         <span class="material-symbols-outlined text-2xl">
             settings

@@ -3,13 +3,31 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class transaksi extends Model
+class Transaksi extends Model
 {
     protected $fillable = [
-    'nama',
-    'jenis',
-    'jumlah',
-    'keterangan'
-];
+        'user_id',
+        'jenis_transaksi',
+        'nominal',
+        'keterangan',
+        'tanggal',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'tanggal' => 'date',
+            'nominal' => 'integer',
+        ];
+    }
+
+    /**
+     * Transaksi belongs to a User.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
