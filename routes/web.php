@@ -27,9 +27,14 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::resource('user', UserController::class);
 });
 
+// Transaksi view - semua role
+Route::middleware(['auth', 'role:super_admin,bendahara,anggota'])->group(function () {
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+});
+
 // Transaksi CRUD — super_admin & bendahara
 Route::middleware(['auth', 'role:super_admin,bendahara'])->group(function () {
-    Route::resource('transaksi', TransaksiController::class);
+    Route::resource('transaksi', TransaksiController::class)->except(['index']);
 });
 
 require __DIR__.'/auth.php';

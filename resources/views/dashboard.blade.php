@@ -221,14 +221,14 @@
                         </a>
                         @endif
 
-                        @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
+                        @if(in_array(Auth::user()->role, ['super_admin', 'bendahara', 'anggota']))
                         <a href="{{ route('transaksi.index') }}" class="h-[56px] px-7 border-2 border-[#ea6b6b] text-[#ea6b6b] rounded-2xl font-bold text-sm hover:bg-[#fff4f4] transition-all flex items-center gap-3">
 
                             <span class="material-symbols-outlined text-[20px]">
                                 visibility
                             </span>
 
-                            Lihat Transaksi
+                            Detail Kas
 
                         </a>
                         @endif
@@ -250,7 +250,7 @@
                             Transaksi Terbaru
                         </h2>
 
-                        @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
+                        @if(in_array(Auth::user()->role, ['super_admin', 'bendahara', 'anggota']))
                         <a href="{{ route('transaksi.index') }}" class="text-[#ea6b6b] text-sm font-bold hover:underline">
                             See All
                         </a>

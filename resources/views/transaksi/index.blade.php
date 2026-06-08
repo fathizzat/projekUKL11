@@ -39,12 +39,14 @@
                     <p class="text-slate-500 mt-1 text-sm">Kelola transparansi keuangan kelas secara digital.</p>
                 </div>
 
+                @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
                 <div class="flex items-center gap-3 self-start lg:self-auto flex-shrink-0">
                     <button onclick="toggleKasModal(true)" class="flex items-center gap-2 bg-[#a03e40] hover:bg-[#893537] text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-red-900/10 transition-all text-sm h-fit">
                         <span class="material-symbols-outlined text-lg">add_circle</span>
                         Tambah Kas
                     </button>
                 </div>
+                @endif
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
@@ -129,6 +131,7 @@
                                 <td class="px-8 py-5 text-right font-bold text-slate-900 text-base">Rp {{ number_format($trx->nominal, 0, ',', '.') }}</td>
                                 <td class="px-8 py-5">
                                     <div class="flex justify-center gap-2">
+                                        @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
                                         <a href="{{ route('transaksi.edit', $trx->id) }}" class="p-2 text-slate-400 hover:text-[#a03e40] hover:bg-red-50 rounded-lg transition-all">
                                             <span class="material-symbols-outlined text-xl">edit</span>
                                         </a>
@@ -139,6 +142,9 @@
                                                 <span class="material-symbols-outlined text-xl">delete</span>
                                             </button>
                                         </form>
+                                        @else
+                                        <span class="text-xs text-slate-400 font-semibold">-</span>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
