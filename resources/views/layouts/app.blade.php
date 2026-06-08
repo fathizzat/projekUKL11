@@ -25,5 +25,56 @@
             </main>
         </div>
     </div>
+
+    <!-- GLOBAL MODAL PILIH KAS -->
+    <div id="pilihKasGlobalModal" class="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-[30px] w-[24rem] shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300">
+            <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-[#fffdfd]">
+                <h3 class="font-extrabold text-slate-800 text-lg">Pilih Kas</h3>
+                <button onclick="togglePilihKasGlobalModal(false)" class="text-slate-400 hover:text-[#ea6b6b] transition-colors flex">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="p-8 space-y-4 relative z-50">
+                <a href="{{ route('transaksi.index') }}" onclick="window.location.href='{{ route('transaksi.index') }}'" class="block relative z-[60] border-2 border-[#ea6b6b] rounded-2xl p-4 hover:bg-[#fff4f4] transition-colors group cursor-pointer overflow-hidden">
+                    <div class="flex items-center justify-between relative z-[70]">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[#ea6b6b]">groups</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">XI SIJA 1</h4>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Primary Organization</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined text-[#ea6b6b] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </div>
+                </a>
+
+                <!-- Placeholder for future kas -->
+                <div class="block border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center opacity-50">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">+ Kas Baru</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePilihKasGlobalModal(show) {
+            const modal = document.getElementById('pilihKasGlobalModal');
+            const content = modal.querySelector('div');
+            if(show) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95');
+                }, 10);
+            } else {
+                modal.classList.add('opacity-0');
+                content.classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+        }
+    </script>
 </body>
 </html>

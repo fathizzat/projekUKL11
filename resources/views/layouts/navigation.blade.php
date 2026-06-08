@@ -30,11 +30,11 @@
 
     </a>
 
-    {{-- TRANSAKSI — super_admin & bendahara --}}
-    @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
+    {{-- TRANSAKSI — super_admin, bendahara, anggota --}}
+    @if(in_array(Auth::user()->role, ['super_admin', 'bendahara', 'anggota']))
 
-        <a href="{{ route('transaksi.index') }}"
-           class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
+        <button onclick="togglePilihKasGlobalModal(true)"
+           class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
            {{ request()->routeIs('transaksi.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
 
             <span class="material-symbols-outlined text-2xl">
@@ -45,7 +45,7 @@
                 Manajemen Kas
             </span>
 
-        </a>
+        </button>
 
     @endif
 

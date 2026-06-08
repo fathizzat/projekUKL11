@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
@@ -12,29 +13,40 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        $transaksis = Transaksi::with('user')
-            ->orderBy('tanggal', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $totalPemasukan = Transaksi::where('jenis_transaksi', 'pemasukan')->sum('nominal');
-        $totalPengeluaran = Transaksi::where('jenis_transaksi', 'pengeluaran')->sum('nominal');
+        $totalPemasukan = Transaksi::where('jenis_transaksi', 'pemasukan')->where('status', 'lunas')->sum('nominal');
+        $totalPengeluaran = Transaksi::where('jenis_transaksi', 'pengeluaran')->where('status', 'lunas')->sum('nominal');
         $totalSaldo = $totalPemasukan - $totalPengeluaran;
 
-        return view('transaksi.index', compact(
-            'transaksis',
-            'totalSaldo',
-            'totalPemasukan',
-            'totalPengeluaran'
-        ));
-    }
+        $bendahara = User::where('role', 'bendahara')->first();
 
-    /**
-     * Show the form for creating a new transaksi.
-     */
-    public function create()
-    {
-        return view('transaksi.create');
+        $anggotas = User::where('role', 'anggota')->get()->map(function ($user) {
+            $user->total_bayar = $user->transaksis()
+                ->where('jenis_transaksi', 'pemasukan')
+                ->where('status', 'lunas')
+                ->sum('nominal');
+
+            $thisWeekKas = $user->transaksis()
+                ->where('jenis_transaksi', 'pemasukan')
+                ->whereBetween('tanggal', [now()->startOfWeek(), now()->endOfWeek()])
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($thisWeekKas) {
+                $user->status_kas = $thisWeekKas->status;
+                $user->kas_id = $thisWeekKas->id;
+            } else {
+                $user->status_kas = 'tunggakan';
+                $user->kas_id = null;
+            }
+
+            return $user;
+        });
+
+        return view('transaksi.index', compact(
+            'anggotas',
+            'bendahara',
+            'totalSaldo'
+        ));
     }
 
     /**
@@ -50,6 +62,7 @@ class TransaksiController extends Controller
         ]);
 
         $validated['user_id'] = auth()->id();
+        $validated['status'] = in_array(auth()->user()->role, ['bendahara', 'super_admin']) ? 'lunas' : 'pending';
 
         Transaksi::create($validated);
 
@@ -57,28 +70,17 @@ class TransaksiController extends Controller
     }
 
     /**
-     * Show the form for editing the specified transaksi.
+     * Confirm a pending transaksi.
      */
-    public function edit(Transaksi $transaksi)
+    public function konfirmasi(Transaksi $transaksi)
     {
-        return view('transaksi.edit', compact('transaksi'));
-    }
+        if (!in_array(auth()->user()->role, ['bendahara', 'super_admin'])) {
+            abort(403);
+        }
 
-    /**
-     * Update the specified transaksi.
-     */
-    public function update(Request $request, Transaksi $transaksi)
-    {
-        $validated = $request->validate([
-            'jenis_transaksi' => ['required', 'in:pemasukan,pengeluaran'],
-            'nominal'         => ['required', 'numeric', 'min:1'],
-            'keterangan'      => ['nullable', 'string', 'max:500'],
-            'tanggal'         => ['required', 'date'],
-        ]);
+        $transaksi->update(['status' => 'lunas']);
 
-        $transaksi->update($validated);
-
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dikonfirmasi.');
     }
 
     /**

@@ -27,14 +27,16 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::resource('user', UserController::class);
 });
 
-// Transaksi view - semua role
+// Transaksi view & store - semua role
 Route::middleware(['auth', 'role:super_admin,bendahara,anggota'])->group(function () {
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+    Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
 });
 
-// Transaksi CRUD — super_admin & bendahara
+// Transaksi CRUD & Konfirmasi — super_admin & bendahara
 Route::middleware(['auth', 'role:super_admin,bendahara'])->group(function () {
-    Route::resource('transaksi', TransaksiController::class)->except(['index']);
+    Route::resource('transaksi', TransaksiController::class)->except(['index', 'store']);
+    Route::patch('/transaksi/{transaksi}/konfirmasi', [TransaksiController::class, 'konfirmasi'])->name('transaksi.konfirmasi');
 });
 
 require __DIR__.'/auth.php';

@@ -13,6 +13,7 @@ class Transaksi extends Model
         'nominal',
         'keterangan',
         'tanggal',
+        'status',
     ];
 
     protected function casts(): array

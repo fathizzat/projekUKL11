@@ -222,7 +222,7 @@
                         @endif
 
                         @if(in_array(Auth::user()->role, ['super_admin', 'bendahara', 'anggota']))
-                        <a href="{{ route('transaksi.index') }}" class="h-[56px] px-7 border-2 border-[#ea6b6b] text-[#ea6b6b] rounded-2xl font-bold text-sm hover:bg-[#fff4f4] transition-all flex items-center gap-3">
+                        <a href="{{ route('transaksi.index') }}" class="h-[56px] px-7 border-2 border-[#ea6b6b] text-[#ea6b6b] rounded-2xl font-bold text-sm hover:bg-[#fff4f4] transition-all flex items-center gap-3 relative z-10">
 
                             <span class="material-symbols-outlined text-[20px]">
                                 visibility
@@ -239,51 +239,67 @@
 
             </div>
 
-            <!-- RIGHT: RECENT TRANSACTIONS -->
+            <!-- RIGHT: NOTES -->
             <div class="col-span-12 lg:col-span-4">
 
                 <div class="bg-white rounded-[30px] border border-slate-100 p-6">
 
                     <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-amber-500 text-[24px]">
+                                sticky_note_2
+                            </span>
+                            <h2 class="text-xl font-black text-slate-800">
+                                Catatan
+                            </h2>
+                        </div>
 
-                        <h2 class="text-xl font-black text-slate-800">
-                            Transaksi Terbaru
-                        </h2>
-
-                        @if(in_array(Auth::user()->role, ['super_admin', 'bendahara', 'anggota']))
-                        <a href="{{ route('transaksi.index') }}" class="text-[#ea6b6b] text-sm font-bold hover:underline">
+                        <a href="#" class="text-[#ea6b6b] text-sm font-bold hover:underline">
                             See All
                         </a>
-                        @endif
-
                     </div>
 
-                    @forelse($transaksiTerbaru as $trx)
-                    <div class="flex items-center justify-between py-3 {{ !$loop->last ? 'border-b border-slate-100' : '' }}">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0
-                                {{ $trx->jenis_transaksi === 'pemasukan' ? 'bg-green-50' : 'bg-red-50' }}">
-                                <span class="material-symbols-outlined text-lg
-                                    {{ $trx->jenis_transaksi === 'pemasukan' ? 'text-green-600' : 'text-red-500' }}">
-                                    {{ $trx->jenis_transaksi === 'pemasukan' ? 'trending_up' : 'trending_down' }}
-                                </span>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-sm font-bold text-slate-800 truncate">{{ $trx->keterangan ?? 'Transaksi' }}</p>
-                                <p class="text-[11px] text-slate-400">{{ $trx->tanggal->format('d M Y') }}</p>
-                            </div>
+                    <div class="space-y-4">
+                        <!-- Note Item 1 -->
+                        <div class="relative bg-[#fffdf9] rounded-2xl p-5 border border-amber-100 overflow-hidden">
+                            <!-- Left Accent -->
+                            <div class="absolute left-0 top-4 bottom-4 w-1.5 bg-amber-400 rounded-r-md"></div>
+                            
+                            <h3 class="text-[15px] font-bold text-slate-700 mb-2">Tagihan Bulan Oktober</h3>
+                            <p class="text-[13px] text-slate-500 leading-relaxed mb-3">
+                                Jangan lupa ingatkan siswa untuk melunasi kas sebelum kegiatan study tour minggu depan.
+                            </p>
+                            <p class="text-[11px] text-slate-400 font-medium">
+                                Today, 09:45 AM
+                            </p>
                         </div>
-                        <p class="text-sm font-extrabold flex-shrink-0 ml-3
-                            {{ $trx->jenis_transaksi === 'pemasukan' ? 'text-green-600' : 'text-red-500' }}">
-                            {{ $trx->jenis_transaksi === 'pemasukan' ? '+' : '-' }}Rp {{ number_format($trx->nominal, 0, ',', '.') }}
-                        </p>
+
+                        <!-- Note Item 2 -->
+                        <div class="relative bg-[#f8f9fc] rounded-2xl p-5 border border-slate-100 overflow-hidden">
+                            <!-- Left Accent -->
+                            <div class="absolute left-0 top-4 bottom-4 w-1.5 bg-slate-300 rounded-r-md"></div>
+                            
+                            <h3 class="text-[15px] font-bold text-slate-700 mb-2">Perbaikan LCD Proyektor</h3>
+                            <p class="text-[13px] text-slate-500 leading-relaxed mb-3">
+                                Estimasi biaya perbaikan Rp 250.000 menggunakan saldo dana darurat.
+                            </p>
+                            <p class="text-[11px] text-slate-400 font-medium">
+                                Yesterday, 02:15 PM
+                            </p>
+                        </div>
+
+                        <!-- Add Note Button (Bendahara Only) -->
+                        @if(Auth::user()->role === 'bendahara' || Auth::user()->role === 'super_admin')
+                        <button class="w-full mt-2 py-6 rounded-2xl border-2 border-dashed border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors flex flex-col items-center justify-center gap-2 group">
+                            <span class="material-symbols-outlined text-slate-400 group-hover:text-slate-500 text-[28px]">
+                                post_add
+                            </span>
+                            <span class="text-xs font-bold text-slate-400 group-hover:text-slate-500 tracking-wider uppercase">
+                                ADD NEW NOTE
+                            </span>
+                        </button>
+                        @endif
                     </div>
-                    @empty
-                    <div class="text-center py-8">
-                        <span class="material-symbols-outlined text-4xl text-slate-300">receipt_long</span>
-                        <p class="text-sm text-slate-400 mt-2">Belum ada transaksi</p>
-                    </div>
-                    @endforelse
 
                 </div>
 
