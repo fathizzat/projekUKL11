@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KasOrganisasi;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -59,12 +60,18 @@ class TransaksiController extends Controller
             'nominal'         => ['required', 'numeric', 'min:1'],
             'keterangan'      => ['nullable', 'string', 'max:500'],
             'tanggal'         => ['required', 'date'],
+            'kas_organisasi_id' => ['nullable', 'exists:kas_organisasis,id'],
         ]);
 
         $validated['user_id'] = auth()->id();
         $validated['status'] = in_array(auth()->user()->role, ['bendahara', 'super_admin']) ? 'lunas' : 'pending';
 
         Transaksi::create($validated);
+
+        if (!empty($validated['kas_organisasi_id'])) {
+            return redirect()->route('organisasi.show', $validated['kas_organisasi_id'])
+                ->with('success', 'Pengajuan transaksi berhasil dikirim.');
+        }
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan.');
     }
@@ -78,9 +85,44 @@ class TransaksiController extends Controller
             abort(403);
         }
 
+        if ($transaksi->jenis_transaksi === 'pemasukan' && $transaksi->kas_organisasi_id) {
+            $organisasi = KasOrganisasi::find($transaksi->kas_organisasi_id);
+            if ($organisasi) {
+                $organisasi->increment('saldo', $transaksi->nominal);
+            }
+        }
+
+        if ($transaksi->jenis_transaksi === 'pengeluaran' && $transaksi->kas_organisasi_id) {
+            $organisasi = KasOrganisasi::find($transaksi->kas_organisasi_id);
+            if ($organisasi && $organisasi->saldo >= $transaksi->nominal) {
+                $organisasi->decrement('saldo', $transaksi->nominal);
+            }
+        }
+
         $transaksi->update(['status' => 'lunas']);
 
+        if ($transaksi->kas_organisasi_id) {
+            return redirect()->route('organisasi.show', $transaksi->kas_organisasi_id)
+                ->with('success', 'Transaksi berhasil dikonfirmasi.');
+        }
+
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dikonfirmasi.');
+    }
+
+    public function tolak(Transaksi $transaksi)
+    {
+        if (!in_array(auth()->user()->role, ['bendahara', 'super_admin'])) {
+            abort(403);
+        }
+
+        $transaksi->update(['status' => 'belum_lunas']);
+
+        if ($transaksi->kas_organisasi_id) {
+            return redirect()->route('organisasi.show', $transaksi->kas_organisasi_id)
+                ->with('success', 'Pengajuan pembayaran ditolak.');
+        }
+
+        return redirect()->route('transaksi.index')->with('success', 'Pengajuan pembayaran ditolak.');
     }
 
     /**

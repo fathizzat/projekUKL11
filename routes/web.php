@@ -4,6 +4,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KasAnggotaController;
+use App\Http\Controllers\KasCatatanController;
+use App\Http\Controllers\KasOrganisasiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +18,18 @@ Route::get('/', function () {
 // Dashboard — semua role bisa akses (auth required)
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('organisasi', KasOrganisasiController::class);
+    Route::post('organisasi/join', [KasAnggotaController::class, 'joinByCode'])->name('organisasi.join.code');
+    Route::post('organisasi/{organisasi}/join', [KasAnggotaController::class, 'store'])->name('organisasi.join.store');
+    Route::post('organisasi/{organisasi}/invite', [KasAnggotaController::class, 'invite'])->name('organisasi.invite.store');
+    Route::patch('organisasi/{organisasi}/join/{anggota}', [KasAnggotaController::class, 'update'])->name('organisasi.join.update');
+    Route::post('organisasi/{organisasi}/catatan', [KasCatatanController::class, 'store'])->name('organisasi.catatan.store');
+    Route::post('organisasi/{organisasi}/saldo', [KasOrganisasiController::class, 'updateSaldo'])->name('organisasi.saldo.update');
+    Route::patch('organisasi/{organisasi}/catatan/{catatan}', [KasCatatanController::class, 'update'])->name('organisasi.catatan.update');
+    Route::delete('organisasi/{organisasi}/catatan/{catatan}', [KasCatatanController::class, 'destroy'])->name('organisasi.catatan.destroy');
 });
 
 // Profile routes (Breeze default)
@@ -39,6 +54,7 @@ Route::middleware(['auth', 'role:super_admin,bendahara,anggota'])->group(functio
 Route::middleware(['auth', 'role:super_admin,bendahara'])->group(function () {
     Route::resource('transaksi', TransaksiController::class)->except(['index', 'store']);
     Route::patch('/transaksi/{transaksi}/konfirmasi', [TransaksiController::class, 'konfirmasi'])->name('transaksi.konfirmasi');
+    Route::patch('/transaksi/{transaksi}/tolak', [TransaksiController::class, 'tolak'])->name('transaksi.tolak');
 });
 
 

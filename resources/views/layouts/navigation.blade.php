@@ -75,8 +75,8 @@
     </div>
 
     <a href="{{ route('profile.edit') }}"
-       class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
-       {{ request()->routeIs('profile.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
+        {{ request()->routeIs('profile.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
 
         <span class="material-symbols-outlined text-2xl">
             settings
@@ -99,7 +99,7 @@
             </span>
 
             <span class="font-bold text-sm tracking-tight">
-                Keluar Sistem
+                Keluar 
             </span>
 
         </button>

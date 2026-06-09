@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KasOrganisasi;
 use App\Models\Transaksi;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -25,6 +25,28 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        $kasOrganisasis = KasOrganisasi::with('user')->latest();
+
+        if (Auth::check() && Auth::user()->role === 'bendahara') {
+            $kasOrganisasis = $kasOrganisasis->where('created_by', Auth::id());
+        }
+
+        if (Auth::check() && Auth::user()->role === 'anggota') {
+            $kasOrganisasis = $kasOrganisasis->whereHas('anggota', function ($query) {
+                $query->where('user_id', Auth::id())
+                    ->where('status', 'accepted');
+            });
+        }
+
+        $kasOrganisasis = $kasOrganisasis->get();
+
+        $pendingJoinCount = 0;
+        if (Auth::check() && in_array(Auth::user()->role, ['bendahara', 'super_admin'], true)) {
+            $pendingJoinCount = \App\Models\KasAnggota::whereHas('organisasi', function ($query) {
+                $query->where('created_by', Auth::id());
+            })->where('status', 'pending')->count();
+        }
+
         return view('dashboard', compact(
             'totalSaldo',
             'totalPemasukan',
@@ -32,7 +54,9 @@ class DashboardController extends Controller
             'totalAnggota',
             'totalBendahara',
             'totalTransaksi',
-            'transaksiTerbaru'
+            'transaksiTerbaru',
+            'kasOrganisasis',
+            'pendingJoinCount'
         ));
     }
 }

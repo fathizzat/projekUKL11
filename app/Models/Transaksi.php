@@ -9,6 +9,7 @@ class Transaksi extends Model
 {
     protected $fillable = [
         'user_id',
+        'kas_organisasi_id',
         'jenis_transaksi',
         'nominal',
         'keterangan',
@@ -30,5 +31,10 @@ class Transaksi extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function organisasi(): BelongsTo
+    {
+        return $this->belongsTo(KasOrganisasi::class, 'kas_organisasi_id');
     }
 }

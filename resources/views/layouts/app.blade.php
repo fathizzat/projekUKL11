@@ -16,6 +16,25 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased bg-[#f9f9f9]">
+    @php
+        $kasPilihan = collect();
+        if (Auth::check()) {
+            $query = \App\Models\KasOrganisasi::query()->with('user')->latest();
+
+            if (Auth::user()->role === 'bendahara' || Auth::user()->role === 'super_admin') {
+                $query->where('created_by', Auth::id());
+            }
+
+            if (Auth::user()->role === 'anggota') {
+                $query->whereHas('anggota', function ($q) {
+                    $q->where('user_id', Auth::id())
+                      ->where('status', 'accepted');
+                });
+            }
+
+            $kasPilihan = $query->get();
+        }
+    @endphp
     <div class="min-h-screen flex">
         @include('layouts.navigation')
 
@@ -36,25 +55,26 @@
                 </button>
             </div>
             <div class="p-8 space-y-4 relative z-50">
-                <a href="{{ route('transaksi.index') }}" class="block border-2 border-[#ea6b6b] rounded-2xl p-4 hover:bg-[#fff4f4] transition-colors group cursor-pointer overflow-hidden">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
-                                <span class="material-symbols-outlined text-[#ea6b6b]">groups</span>
+                @forelse($kasPilihan as $kas)
+                    <a href="{{ route('organisasi.show', $kas) }}" class="block border-2 border-[#ea6b6b] rounded-2xl p-4 hover:bg-[#fff4f4] transition-colors group cursor-pointer overflow-hidden">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-[#ea6b6b]">groups</span>
+                                </div>
+                                <div class="min-w-0">
+                                    <h4 class="font-bold text-slate-800 truncate">{{ $kas->nama_organisasi }}</h4>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{{ $kas->user->name ?? 'Bendahara' }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-slate-800">XI SIJA 1</h4>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Primary Organization</p>
-                            </div>
+                            <span class="material-symbols-outlined text-[#ea6b6b] group-hover:translate-x-1 transition-transform shrink-0">arrow_forward</span>
                         </div>
-                        <span class="material-symbols-outlined text-[#ea6b6b] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </a>
+                @empty
+                    <div class="block border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center text-slate-500">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Belum ada kas yang bisa dibuka</p>
                     </div>
-                </a>
-
-                <!-- Placeholder for future kas -->
-                <div class="block border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center opacity-50">
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">+ Kas Baru</p>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>

@@ -133,11 +133,11 @@
                                     </span>
                                     @elseif($anggota->status_kas === 'pending')
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-widest bg-amber-50 text-amber-600">
-                                        Pending
+                                        Menunggu Konfirmasi
                                     </span>
                                     @else
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-widest bg-red-50 text-red-500">
-                                        Tunggakan
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-600">
+                                        Belum Lunas
                                     </span>
                                     @endif
                                 </td>

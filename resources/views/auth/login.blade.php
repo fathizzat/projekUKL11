@@ -50,7 +50,7 @@
                     <span class="material-symbols-outlined text-2xl font-bold">login</span>
                 </div>
                 <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Selamat Datang</h2>
-                <p class="text-sm text-slate-500 mt-1">Masuk & kelola sistem kas anda 123</p>
+                <p class="text-sm text-slate-500 mt-1">Masuk & kelola sistem kas anda.</p>
             </div>
 
             <form method="POST" action="{{ route('login') }}" class="space-y-4">
