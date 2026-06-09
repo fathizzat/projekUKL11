@@ -12,8 +12,17 @@ test('new users can register', function () {
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'role' => 'anggota',
     ]);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $this->assertGuest();
+    $response->assertRedirect(route('login', absolute: false));
+});
+
+test('register page contains role and password confirmation fields', function () {
+    $response = $this->get('/register');
+
+    $response->assertStatus(200)
+        ->assertSee('name="password_confirmation"', false)
+        ->assertSee('name="role"', false);
 });

@@ -69,68 +69,22 @@
             </form>
 
             <p class="text-center text-xs font-medium text-slate-500 mt-8">
-                Belum punya akun? <button onclick="toggleAuth()" class="font-bold text-[#a03e40] hover:underline cursor-pointer">Daftar Akun</button>
-            </p>
-        </div>
-
-        <!-- BAGIAN REGISTER -->
-        <div id="register-section" class="hidden-form auth-container">
-            <div class="text-center mb-8">
-                <div class="inline-flex p-3 bg-red-50 rounded-2xl mb-3 text-[#a03e40]">
-                    <span class="material-symbols-outlined text-2xl font-bold">person_add</span>
-                </div>
-                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Daftar Baru</h2>
-                <p class="text-sm text-slate-500 mt-1">Buat akun untuk akses Kas Digital</p>
-            </div>
-
-            <form method="POST" action="{{ route('register') }}" class="space-y-4">
-                @csrf
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Nama</label>
-                    <input type="text" name="name" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-red-100 focus:border-[#a03e40] outline-none transition-all">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Email</label>
-                    <input type="email" name="email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-red-100 focus:border-[#a03e40] outline-none transition-all">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Password</label>
-                    <input type="password" name="password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-red-100 focus:border-[#a03e40] outline-none transition-all">
-                </div>
-                <button type="submit" class="w-full py-3.5 bg-[#a03e40] hover:bg-[#893537] text-white font-bold rounded-2xl shadow-lg shadow-red-900/10 transition-all text-sm mt-4">
-                    Buat Akun
-                </button>
-            </form>
-
-            <p class="text-center text-xs font-medium text-slate-500 mt-8">
-                Sudah punya akun? <button onclick="toggleAuth()" class="font-bold text-[#a03e40] hover:underline cursor-pointer">Login disini</button>
+                Belum punya akun? <a href="{{ route('register') }}" class="font-bold text-[#a03e40] hover:underline">Daftar sekarang</a>
             </p>
         </div>
 
     </div>
 
-    <!-- SCRIPT ANIMASI TOGGLE -->
-    <script>
-        function toggleAuth() {
-            const loginSection = document.getElementById('login-section');
-            const registerSection = document.getElementById('register-section');
+    @if ($errors->any())
+        <script>
+            window.addEventListener('DOMContentLoaded', function () {
+                const messages = @json($errors->all());
+                if (messages.length) {
+                    alert(messages.join('\n'));
+                }
+            });
+        </script>
+    @endif
 
-            if (loginSection.classList.contains('active-form')) {
-                // Sembunyikan Login, Tampilkan Register
-                loginSection.classList.remove('active-form');
-                loginSection.classList.add('hidden-form');
-                
-                registerSection.classList.remove('hidden-form');
-                registerSection.classList.add('active-form');
-            } else {
-                // Sembunyikan Register, Tampilkan Login
-                registerSection.classList.remove('active-form');
-                registerSection.classList.add('hidden-form');
-                
-                loginSection.classList.remove('hidden-form');
-                loginSection.classList.add('active-form');
-            }
-        }
-    </script>
 </body>
 </html>
