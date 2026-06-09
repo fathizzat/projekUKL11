@@ -14,3 +14,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('transaksi', TransaksiController::class);
 });
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/tes-api', function () {
+    return response()->json([
+        'status' => 'API BERJALAN',
+    ]);
+});
