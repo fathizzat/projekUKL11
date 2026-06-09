@@ -15,9 +15,14 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string ...$roles): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (!auth()->check() || !in_array(auth()->user()->role, $roles)) {
+        $parsedRoles = [];
+        foreach ($roles as $role) {
+            $parsedRoles = array_merge($parsedRoles, explode(',', $role));
+        }
+
+        if (!auth()->check() || !in_array(auth()->user()->role, $parsedRoles)) {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
 

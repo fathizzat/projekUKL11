@@ -1,5 +1,7 @@
-<?php
 
+
+<?php
+dd('WEB PHP TERBACA');
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
@@ -39,16 +41,6 @@ Route::middleware(['auth', 'role:super_admin,bendahara'])->group(function () {
     Route::patch('/transaksi/{transaksi}/konfirmasi', [TransaksiController::class, 'konfirmasi'])->name('transaksi.konfirmasi');
 });
 
-Route::middleware(['auth'])->group(function () {
 
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-    Route::get('/user/dashboard', function () {
-        return view('user.dashboard');
-    })->name('user.dashboard');
-
-});
 
 require __DIR__.'/auth.php';

@@ -36,8 +36,8 @@
                 </button>
             </div>
             <div class="p-8 space-y-4 relative z-50">
-                <a href="{{ route('transaksi.index') }}" onclick="window.location.href='{{ route('transaksi.index') }}'" class="block relative z-[60] border-2 border-[#ea6b6b] rounded-2xl p-4 hover:bg-[#fff4f4] transition-colors group cursor-pointer overflow-hidden">
-                    <div class="flex items-center justify-between relative z-[70]">
+                <a href="{{ route('transaksi.index') }}" class="block border-2 border-[#ea6b6b] rounded-2xl p-4 hover:bg-[#fff4f4] transition-colors group cursor-pointer overflow-hidden">
+                    <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
                                 <span class="material-symbols-outlined text-[#ea6b6b]">groups</span>

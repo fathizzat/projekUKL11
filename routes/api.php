@@ -11,8 +11,8 @@ Route::post('/login', [AuthController::class, 'login']);
 // Protected API (Sanctum)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('transaksi', TransaksiController::class);
+    Route::apiResource('users', UserController::class)->names('api.users');
+    Route::apiResource('transaksi', TransaksiController::class)->names('api.transaksi');
 });
 
 Route::post('/login', [AuthController::class, 'login']);

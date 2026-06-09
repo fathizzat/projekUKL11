@@ -57,9 +57,5 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::middleware(['auth','role:super_admin,bendahara'])->group(function () {
-        Route::get('/users', function () {
-            return view('user.index');
-        })->name('user.index');
-    });
+    // Route removed to prevent overriding user.index from web.php
 });
