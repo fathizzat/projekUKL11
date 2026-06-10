@@ -11,19 +11,19 @@
                 Kas Digital
             </h1>
 
-            <div class="relative">
-
+            <form action="{{ route('dashboard') }}" method="GET" class="relative">
                 <input
                     type="text"
-                    placeholder="Search data..."
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Cari nama kas..."
                     class="w-[280px] h-[46px] bg-[#f3f5f9] rounded-full pl-12 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#ea6b6b]/20"
                 >
 
                 <span class="material-symbols-outlined absolute left-4 top-[11px] text-slate-400 text-[20px]">
                     search
                 </span>
-
-            </div>
+            </form>
 
         </div>
 
@@ -97,7 +97,11 @@
                     </div>
 
                     @if($kasOrganisasis->isEmpty())
-                        @if(Auth::user()->role === 'anggota' && $kasOrganisasis->isEmpty())
+                        @if(!empty(request('search')))
+                            <div class="rounded-[28px] border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-slate-500">
+                                Tidak ada kas dengan nama "{{ request('search') }}".
+                            </div>
+                        @elseif(Auth::user()->role === 'anggota')
                             <div class="rounded-[28px] border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-slate-500 space-y-4">
                                 <p class="text-lg font-black text-slate-700">Belum bergabung ke kas manapun</p>
                                 <button type="button" onclick="toggleJoinModal(true)" class="h-[44px] px-5 rounded-2xl bg-[#ea6b6b] text-white text-sm font-bold hover:bg-[#df5f5f] transition-all">Gabung Kas</button>

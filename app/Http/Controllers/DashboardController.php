@@ -11,6 +11,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $search = request('search');
         $totalPemasukan = Transaksi::where('jenis_transaksi', 'pemasukan')->sum('nominal');
         $totalPengeluaran = Transaksi::where('jenis_transaksi', 'pengeluaran')->sum('nominal');
         $totalSaldo = $totalPemasukan - $totalPengeluaran;
@@ -26,6 +27,10 @@ class DashboardController extends Controller
             ->get();
 
         $kasOrganisasis = KasOrganisasi::with('user')->latest();
+
+        if (!empty($search)) {
+            $kasOrganisasis = $kasOrganisasis->where('nama_organisasi', 'like', '%' . $search . '%');
+        }
 
         if (Auth::check() && Auth::user()->role === 'bendahara') {
             $kasOrganisasis = $kasOrganisasis->where('created_by', Auth::id());
@@ -56,7 +61,8 @@ class DashboardController extends Controller
             'totalTransaksi',
             'transaksiTerbaru',
             'kasOrganisasis',
-            'pendingJoinCount'
+            'pendingJoinCount',
+            'search'
         ));
     }
 }
