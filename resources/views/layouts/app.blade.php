@@ -38,10 +38,12 @@
     <div class="min-h-screen flex">
         @include('layouts.navigation')
 
-        <div class="flex-1 pl-72 w-full overflow-hidden">
-            <main>
+        <div class="flex-1 pl-72 w-full flex flex-col overflow-hidden">
+            <main class="flex-1">
                 {{ $slot }}
             </main>
+
+            @include('components.app-footer')
         </div>
     </div>
 

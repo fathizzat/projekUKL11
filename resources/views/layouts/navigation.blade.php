@@ -1,3 +1,23 @@
+@php
+    $kasPilihan = collect();
+    if (Auth::check()) {
+        $query = \App\Models\KasOrganisasi::query()->with('user')->latest();
+
+        if (Auth::user()->role === 'bendahara' || Auth::user()->role === 'super_admin') {
+            $query->where('created_by', Auth::id());
+        }
+
+        if (Auth::user()->role === 'anggota') {
+            $query->whereHas('anggota', function ($q) {
+                $q->where('user_id', Auth::id())
+                  ->where('status', 'accepted');
+            });
+        }
+
+        $kasPilihan = $query->get();
+    }
+@endphp
+
 <aside class="fixed left-0 top-0 h-screen w-72 bg-white border-r border-slate-200 z-50 transition-all duration-300 font-['Plus_Jakarta_Sans']">
     <div class="px-8 py-10 flex items-center gap-3">
         <div class="w-10 h-10 bg-[#a03e40] rounded-xl flex items-center justify-center shadow-lg shadow-red-900/20">
@@ -34,8 +54,8 @@
     @if(in_array(Auth::user()->role, ['super_admin', 'bendahara', 'anggota']))
 
         <button onclick="togglePilihKasGlobalModal(true)"
-           class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
-           {{ request()->routeIs('transaksi.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
+            { request()->routeIs('transaksi.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
 
             <span class="material-symbols-outlined text-2xl">
                 receipt_long
@@ -47,14 +67,25 @@
 
         </button>
 
+        @if($kasPilihan->isNotEmpty())
+            <div class="ml-4 mr-2 space-y-1 pb-1">
+                @foreach($kasPilihan as $kas)
+                    <a href="{{ route('organisasi.show', $kas) }}" class="flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-slate-50/80 px-3 py-2.5 text-xs font-bold text-slate-700 transition hover:border-[#ea6b6b]/30 hover:bg-[#fff4f4] hover:text-[#a03e40]">
+                        <span class="truncate">{{ $kas->nama_organisasi }}</span>
+                        <span class="material-symbols-outlined text-base text-[#ea6b6b]">arrow_forward</span>
+                    </a>
+                @endforeach
+            </div>
+        @endif
+
     @endif
 
     {{-- USER / DAFTAR SISWA — super_admin only --}}
     @if(Auth::user()->role === 'super_admin')
 
         <a href="{{ route('user.index') }}"
-           class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
-           {{ request()->routeIs('user.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+            class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all
+            {{ request()->routeIs('user.*') ? 'bg-red-50 text-[#a03e40]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
 
             <span class="material-symbols-outlined text-2xl">
                 group

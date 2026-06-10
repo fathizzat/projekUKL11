@@ -7,7 +7,10 @@
                     <h1 class="text-3xl font-black text-slate-900 mt-2">{{ $organisasi->nama_organisasi }}</h1>
                     <p class="text-sm text-slate-500 mt-1">Kode Kas: {{ $organisasi->kode_kelas }}</p>
                 </div>
-                <a href="{{ route('dashboard') }}" class="h-[27px] px-9 rounded-2xl bg-[#ea6b6b] text-white text-sm font-bold hover:bg-[#df5f5f] transition-all">Kembali</a>
+                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 rounded-2xl border border-[#ea6b6b]/20 bg-white px-4 py-2 text-sm font-black text-[#ea6b6b] shadow-sm shadow-red-900/5 transition hover:-translate-y-0.5 hover:bg-[#fff4f4] hover:text-[#d45f60]">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    Kembali
+                </a>
             </div>
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -70,6 +73,13 @@
                             <button type="button" onclick="toggleSaldoModal('tambah')" class="h-[44px] px-5 rounded-2xl bg-[#ea6b6b] text-white text-sm font-bold hover:bg-[#df5f5f] transition-all">Tambah Saldo Kas</button>
                             <button type="button" onclick="toggleSaldoModal('kurang')" class="h-[44px] px-5 rounded-2xl border border-[#ea6b6b] text-[#ea6b6b] text-sm font-bold hover:bg-[#fff4f4] transition-all">Kurangi Saldo Kas</button>
                             <button type="button" onclick="toggleUndangModal(true)" class="h-[44px] px-5 rounded-2xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all">Undang Anggota</button>
+                            @can('delete', $organisasi)
+                                <form action="{{ route('organisasi.destroy', $organisasi) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kas ini? Semua data terkait juga akan ikut dihapus.')" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="h-[44px] px-5 rounded-2xl bg-rose-600 text-white text-sm font-bold hover:bg-rose-700 transition-all">Hapus Kas</button>
+                                </form>
+                            @endcan
                         @endif
                     </div>
                 </div>

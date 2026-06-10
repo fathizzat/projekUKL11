@@ -23,6 +23,13 @@ class KasOrganisasiController extends Controller
         return view('organisasi.index', compact('kasOrganisasis'));
     }
 
+    public function create()
+    {
+        $this->authorize('create', KasOrganisasi::class);
+
+        return redirect()->route('dashboard');
+    }
+
     public function store(Request $request)
     {
         $this->authorize('create', KasOrganisasi::class);
@@ -61,6 +68,13 @@ class KasOrganisasiController extends Controller
         $users = User::where('id', '!=', auth()->id())->orderBy('name')->get();
 
         return view('organisasi.show', compact('organisasi', 'anggotaList', 'pendingAnggota', 'pendingTransaksis', 'catatans', 'users'));
+    }
+
+    public function edit(KasOrganisasi $organisasi)
+    {
+        $this->authorize('update', $organisasi);
+
+        return redirect()->route('organisasi.show', $organisasi);
     }
 
     public function updateSaldo(Request $request, KasOrganisasi $organisasi)

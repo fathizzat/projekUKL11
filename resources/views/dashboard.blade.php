@@ -30,15 +30,14 @@
         <div class="flex items-center gap-6">
 
             <button type="button" class="relative text-slate-400 hover:text-slate-600" aria-label="Notifikasi join">
-                <span class="material-symbols-outlined">notifications</span>
+                
+            
                 @if(!empty($pendingJoinCount))
                     <span class="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ea6b6b] px-1 text-[10px] font-black text-white">{{ $pendingJoinCount }}</span>
                 @endif
             </button>
 
-            <button class="text-slate-400 hover:text-slate-600">
-                <span class="material-symbols-outlined">help</span>
-            </button>
+            
 
         </div>
 
@@ -80,11 +79,21 @@
                             <h2 class="text-2xl font-black text-slate-800 mt-2">Preview Kas / Organisasi</h2>
                             
                         </div>
-                        @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
-                            <button type="button" onclick="toggleKasOrganisasiModal(true)" class="h-[52px] px-6 rounded-2xl bg-[#ea6b6b] text-white font-bold text-sm hover:bg-[#df5f5f] transition-all flex items-center gap-2 self-start"> <span class="material-symbols-outlined text-[18px]">add_business</span> Buat Kas</button>
-                        @elseif(Auth::user()->role === 'anggota')
-                            <button type="button" onclick="toggleJoinModal(true)" class="h-[52px] px-6 rounded-2xl bg-[#ea6b6b] text-white font-bold text-sm hover:bg-[#df5f5f] transition-all flex items-center gap-2 self-start"> <span class="material-symbols-outlined text-[18px]">group_add</span> Gabung Kas</button>
-                        @endif
+                        <div class="flex flex-wrap items-center gap-3 self-start">
+                            
+
+                            @if(in_array(Auth::user()->role, ['super_admin', 'bendahara']))
+                                <button type="button" onclick="toggleKasOrganisasiModal(true)" class="h-[52px] px-6 rounded-2xl bg-[#ea6b6b] text-white font-bold text-sm hover:bg-[#df5f5f] transition-all flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">add_business</span>
+                                    Buat Kas
+                                </button>
+                            @elseif(Auth::user()->role === 'anggota')
+                                <button type="button" onclick="toggleJoinModal(true)" class="h-[52px] px-6 rounded-2xl bg-[#ea6b6b] text-white font-bold text-sm hover:bg-[#df5f5f] transition-all flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">group_add</span>
+                                    Gabung Kas
+                                </button>
+                            @endif
+                        </div>
                     </div>
 
                     @if($kasOrganisasis->isEmpty())

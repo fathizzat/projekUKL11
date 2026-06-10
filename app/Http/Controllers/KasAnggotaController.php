@@ -22,7 +22,7 @@ class KasAnggotaController extends Controller
         $this->authorize('join', $organisasi);
 
         if ($organisasi->anggota()->where('user_id', auth()->id())->exists()) {
-            return redirect()->route('organisasi.show', $organisasi)
+            return redirect()->route('dashboard')
                 ->with('error', 'Anda sudah pernah mengirim permintaan join untuk kas ini.');
         }
 
@@ -31,8 +31,8 @@ class KasAnggotaController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('organisasi.show', $organisasi)
-            ->with('success', 'Permintaan bergabung berhasil dikirim. Bendahara dapat meninjaunya dari halaman detail kas.');
+        return redirect()->route('dashboard')
+            ->with('success', 'Permintaan bergabung berhasil dikirim. Menunggu persetujuan bendahara.');
     }
 
     public function store(Request $request, KasOrganisasi $organisasi)
@@ -40,7 +40,7 @@ class KasAnggotaController extends Controller
         $this->authorize('join', $organisasi);
 
         if ($organisasi->anggota()->where('user_id', auth()->id())->exists()) {
-            return redirect()->route('organisasi.show', $organisasi)
+            return redirect()->route('dashboard')
                 ->with('error', 'Anda sudah pernah mengirim permintaan join untuk kas ini.');
         }
 
@@ -49,8 +49,8 @@ class KasAnggotaController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('organisasi.show', $organisasi)
-            ->with('success', 'Permintaan bergabung berhasil dikirim. Bendahara dapat meninjaunya dari halaman detail kas.');
+        return redirect()->route('dashboard')
+            ->with('success', 'Permintaan bergabung berhasil dikirim. Menunggu persetujuan bendahara.');
     }
 
     public function invite(Request $request, KasOrganisasi $organisasi)
